@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>City Travel</title>
 </head>
 <body>
     <div class="header">
-        <img src="img/PngItem_6807185.png">
+        <img src="img/PngItem_6807185.png" id="plane">
         <h1>City Travel</h1>
     </div>
     <section class="search-section">
         <input type="search" id="city-search" name="q" aria-label="Search through site content">
         <button id="search-button"><p>Go</p></button>
-        <input type="checkbox" id="checkbox-weather" value="weather">
-        <label for="checkbox-weather"><p>Only Weather</p></label>
-        <input type="checkbox" id="checkbox-attractions" value="attractions">
-        <label for="checkbox-attractions"><p>Only Attractions</p></label>
-        <input type="checkbox" id="filter" value="filter">
-        <label for="filter"><p>Filter Alfabetically</p></label>
+        <div class="checkboxes">
+            <input type="checkbox" id="checkbox-weather" value="weather">
+            <label for="checkbox-weather"><p>Only Weather</p></label><br>
+            <input type="checkbox" id="checkbox-attractions" value="attractions">
+            <label for="checkbox-attractions"><p>Only Attractions</p></label><br>
+            <input type="checkbox" id="filter" value="filter">
+            <label for="filter"><p>Filter Alfabetically</p></label><br>
+        </div>
     </section>
     <section class="result-section">
         <h2>Stadens namn</h2><br>
@@ -29,5 +32,8 @@
             <p>Condition: rainy</p>
         </div>
     </section>
+    <footer>
+        <p>© Isabella Pettersson</p>
+    </footer>
 </body>
 </html>
