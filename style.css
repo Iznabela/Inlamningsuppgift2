@@ -91,15 +91,38 @@ h2 {
 }
 
 h3 {
-    margin-left: 320px;
+    margin: auto;
+    width: 200px;
 }
 
 .weather-box {
     border: 3px solid black;
     width: 200px;
     padding: 10px;
+    margin: 0 auto 50px auto;
+    visibility: visible;
+}
+
+.weather-box h3 {
+    margin: auto;
+}
+
+.attractions {
+    display: flex;
+    justify-content: space-around;
+    visibility: visible;
+}
+
+.attraction-box {
+    border: 3px solid black;
+    width: 200px;
+    padding: 10px;
     margin: auto;
     margin-top: 0;
+}
+
+.attraction-box h3 {
+    margin: auto;
 }
 
 footer {
