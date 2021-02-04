@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="main.js"></script>
     <title>City Travel</title>
 </head>
 <body>
@@ -13,7 +14,7 @@
     </div>
     <section class="search-section">
         <input type="search" id="city-search" name="q" aria-label="Search through site content">
-        <button id="search-button"><p>Go</p></button>
+        <button id="search-button" onclick="showInfo()"><p>Go</p></button>
         <div class="checkboxes">
             <input type="checkbox" id="checkbox-weather" value="weather">
             <label for="checkbox-weather"><p>Only Weather</p></label><br>
@@ -25,14 +26,16 @@
     </section>
     <section class="result-section">
         <h2>Stadens namn</h2><br>
-        <h3>Current Weather</h3><br>
-        <div class="weather-box">
-            <h3>Monday</h3>
-            <p>Temperature: -2</p>
-            <p>Condition: Rainy</p>
-        </div><br><br>
-        <h3>Top Attractions</h3><br><br>
+        <div id="weather">
+            <h3>Current Weather</h3><br>
+            <div class="weather-box">
+                <h3>Monday</h3>
+                <p>Temperature: -2</p>
+                <p>Condition: Rainy</p>
+            </div><br><br>
+        </div>  
         <div class="attractions">
+            <h3>Top Attractions</h3><br><br>
             <div class="attraction-box a-1">
                 <h3>Spinning tower</h3>
                 <p>Don't miss out on this fantastic tower when visiting!</p>

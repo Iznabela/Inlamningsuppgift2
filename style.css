@@ -52,7 +52,7 @@ h1 {
     align-self: center;
     margin: 10px;
     box-shadow: 4px 4px 1px -1px rgba(0,0,0,0.76);
-    background-color: rgb(239, 252, 248);;
+    background-color: rgb(239, 252, 248);
 }
 
 #search-button:hover {
@@ -95,12 +95,15 @@ h3 {
     width: 200px;
 }
 
+#weather {
+    visibility: hidden;
+}
+
 .weather-box {
     border: 3px solid black;
     width: 200px;
     padding: 10px;
     margin: 0 auto 50px auto;
-    visibility: visible;
 }
 
 .weather-box h3 {
@@ -110,7 +113,7 @@ h3 {
 .attractions {
     display: flex;
     justify-content: space-around;
-    visibility: visible;
+    visibility: hidden;
 }
 
 .attraction-box {
