@@ -102,7 +102,7 @@ h3 {
 .weather-box {
     border: 3px solid black;
     width: 200px;
-    padding: 10px;
+    padding: 30px;
     margin: 0 auto 50px auto;
 }
 
@@ -110,18 +110,21 @@ h3 {
     margin: auto;
 }
 
-.attractions {
-    display: flex;
-    justify-content: space-around;
+#attractions-title {
     visibility: hidden;
 }
 
+.attractions {
+    display: flex;
+    justify-content: space-around;
+}
+
 .attraction-box {
+    visibility: hidden;
     border: 3px solid black;
     width: 200px;
-    padding: 10px;
+    padding: 30px;
     margin: auto;
-    margin-top: 0;
 }
 
 .attraction-box h3 {

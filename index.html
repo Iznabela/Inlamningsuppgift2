@@ -14,11 +14,11 @@
     </div>
     <section class="search-section">
         <input type="search" id="city-search" name="q" aria-label="Search through site content">
-        <button id="search-button" onclick="showInfo()"><p>Go</p></button>
+        <button id="search-button" type="submit" value="enter" onclick="showInfo()"><p>Go</p></button>
         <div class="checkboxes">
-            <input type="checkbox" id="checkbox-weather" value="weather">
+            <input type="checkbox" id="checkbox-weather" onclick="showInfo()" value="weather">
             <label for="checkbox-weather"><p>Only Weather</p></label><br>
-            <input type="checkbox" id="checkbox-attractions" value="attractions">
+            <input type="checkbox" id="checkbox-attractions" onclick="showInfo()" value="attractions">
             <label for="checkbox-attractions"><p>Only Attractions</p></label><br>
             <input type="checkbox" id="filter" value="filter">
             <label for="filter"><p>Filter Alfabetically</p></label><br>
@@ -33,9 +33,9 @@
                 <p>Temperature: -2</p>
                 <p>Condition: Rainy</p>
             </div><br><br>
-        </div>  
+        </div> 
+        <h3 id="attractions-title">Top Attractions</h3><br><br>
         <div class="attractions">
-            <h3>Top Attractions</h3><br><br>
             <div class="attraction-box a-1">
                 <h3>Spinning tower</h3>
                 <p>Don't miss out on this fantastic tower when visiting!</p>
