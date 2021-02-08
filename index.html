@@ -14,24 +14,24 @@
     </div>
     <section class="search-section">
         <input type="search" id="city-search" name="q" aria-label="Search through site content">
-        <button id="search-button" type="submit" value="enter" onclick="showInfo()"><p>Go</p></button>
+        <button id="search-button" type="submit" value="enter" onclick="buttonWasClicked()"><p>Go</p></button>
         <div class="checkboxes">
-            <input type="checkbox" id="checkbox-weather" onclick="showInfo()" value="weather">
+            <input type="checkbox" id="checkbox-weather" value="weather">
             <label for="checkbox-weather"><p>Only Weather</p></label><br>
-            <input type="checkbox" id="checkbox-attractions" onclick="showInfo()" value="attractions">
+            <input type="checkbox" id="checkbox-attractions" value="attractions">
             <label for="checkbox-attractions"><p>Only Attractions</p></label><br>
             <input type="checkbox" id="filter" value="filter">
             <label for="filter"><p>Filter Alfabetically</p></label><br>
         </div>
     </section>
     <section class="result-section">
-        <h2>Stadens namn</h2><br>
+        <h2 id="city-name">Stadens namn</h2><br>
         <div id="weather">
             <h3>Current Weather</h3><br>
             <div class="weather-box">
-                <h3>Monday</h3>
-                <p>Temperature: -2</p>
-                <p>Condition: Rainy</p>
+                <h3 id="weekday">Monday</h3>
+                <p id="temp">Temperature: -2</p>
+                <p id="condition">Condition: Rainy</p>
             </div><br><br>
         </div> 
         <h3 id="attractions-title">Top Attractions</h3><br><br>
@@ -45,8 +45,8 @@
                 <p>Go and see what the future might bring to the world at this museum!</p>
             </div>
             <div class="attraction-box a-3">
-                <h3>Forest Tower</h3>
-                <p>Take a walk on this beauty of a tower with trees that are over 200 years old.</p>
+                <h3>Forest Bridge</h3>
+                <p>Take a walk on this beauty of a bridge with trees that are over 200 years old.</p>
             </div>
         </div>
     </section>
