@@ -103,6 +103,6 @@ function printWeather(data) {
 
     cityName.innerHTML = data.name;
     weekday.innerHTML = weekdays[day.getDay()];
-    temp.innerHTML = celsius + '&deg;';
+    temp.innerHTML =  celsius + '&deg;';
     condition.innerHTML = data.weather[0].description;
 }
