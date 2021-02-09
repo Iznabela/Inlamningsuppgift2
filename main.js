@@ -117,7 +117,6 @@ function getAttractions(cityName) {
     fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityName + '&limit=10&v=20210209')
     .then(function(response) { return response.json() })
     .then(function(attractionData) {
-        //printAttractions(attractionData)
         printAttractions(attractionData);
         console.log(attractionData);
     })
@@ -127,6 +126,9 @@ function getAttractions(cityName) {
 }
 
 function printAttractions(attractionData) {
-    document.getElementById('attbox1-title').innerHTML = attractionData.response.groups[0].items[0].venue.name;
-    document.getElementById('attbox1-adress').innerHTML = attractionData.response.groups[0].items[0].venue.location.address;
+    let i;
+    for(i = 0; i < 3; i++) {
+        document.getElementById('attbox' + i + '-title').innerHTML = attractionData.response.groups[0].items[i].venue.name;
+        document.getElementById('attbox' + i + '-adress').innerHTML = attractionData.response.groups[0].items[i].venue.location.address;
+    }
 }
