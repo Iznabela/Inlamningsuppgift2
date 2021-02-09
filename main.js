@@ -118,6 +118,7 @@ function getAttractions(cityName) {
     .then(function(response) { return response.json() })
     .then(function(attractionData) {
         //printAttractions(attractionData)
+        printAttractions(attractionData);
         console.log(attractionData);
     })
     .catch(function() {
@@ -126,9 +127,6 @@ function getAttractions(cityName) {
 }
 
 function printAttractions(attractionData) {
-    const attBoxTitle = document.querySelectorAll("att-box1");
-    const attbox2 = document.getElementById("att-box2");
-    const attbox3 = document.getElementById("att-box3");
-
-    attbox
+    document.getElementById('attbox1-title').innerHTML = attractionData.response.groups[0].items[0].venue.name;
+    document.getElementById('attbox1-adress').innerHTML = attractionData.response.groups[0].items[0].venue.location.address;
 }
