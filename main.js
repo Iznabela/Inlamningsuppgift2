@@ -1,13 +1,13 @@
 'use strict'
 
 window.onload = function() {
-    let weatherCheckbox = document.getElementById('checkbox-weather');
-    let attractionsCheckbox = document.getElementById('checkbox-attractions');
-    let filter = document.getElementById('filter');
+    const weatherCheckbox = document.getElementById('checkbox-weather');
+    const attractionsCheckbox = document.getElementById('checkbox-attractions');
+    const filter = document.getElementById('filter');
 
-    let searchButton = document.getElementById('search-button');  
-    let cityName = document.getElementById('city-name');
-    let input = document.getElementById('city-search');
+    const searchButton = document.getElementById('search-button');  
+    const cityName = document.getElementById('city-name');
+    const input = document.getElementById('city-search');
     
 
     if (searchButton.onclick = function() {
@@ -34,6 +34,7 @@ window.onload = function() {
         }
         else {
             getWeather(city);
+            getAttractions(city);
             weatherVisible();
             attractionsVisible();
         }
@@ -41,55 +42,35 @@ window.onload = function() {
 }
 
 function weatherVisible() {
-    let weather = document.getElementById('weather');
+    const weather = document.getElementById('weather');
     weather.style.visibility = 'visible';
 }
 
 function weatherHidden() {
-    let weather = document.getElementById('weather');
+    const weather = document.getElementById('weather');
     weather.style.visibility = 'hidden';
 }
 
-function attractionsVisible() {
-    let attractionsTitle = document.getElementById('attractions-title');
-    let attractionBoxes = document.querySelectorAll('.attraction-box');
-
-    attractionsTitle.style.visibility = 'visible';
-    attractionBoxes.forEach(element => {
-        element.style.visibility = 'visible';
-    });
-}
-
-function attractionsHidden() {
-    let attractionsTitle = document.getElementById('attractions-title');
-    let attractionBoxes = document.querySelectorAll('.attraction-box');
-
-    attractionsTitle.style.visibility = 'hidden';
-    attractionBoxes.forEach(element => {
-        element.style.visibility = 'hidden';
-    });
-}
-
 function getWeather(cityName) {
-    let apiKey = '2679a1068897e9be48c436e6054fa94a';
-    fetch('https://api.openweathermap.org/data/2.5/weather?q='+cityName+'&appid='+apiKey+'')
-    .then(function(resp) { return resp.json() })
-    .then(function(data) {
-        printWeather(data);
+    const apiKey = '2679a1068897e9be48c436e6054fa94a';
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '')
+    .then(function(response) { return response.json() })
+    .then(function(weatherData) {
+        printWeather(weatherData);
     })
     .catch(function() {
 
     });
 }
 
-function printWeather(data) {
-    let cityName = document.getElementById('city-name');
-    let weekday = document.getElementById('weekday');
-    let temp = document.getElementById('temp');
-    let condition = document.getElementById('condition');
+function printWeather(weatherData) {
+    const cityName = document.getElementById('city-name');
+    const weekday = document.getElementById('weekday');
+    const temp = document.getElementById('temp');
+    const condition = document.getElementById('condition');
 
-    let day = new Date();
-    let weekdays = new Array(7);
+    const day = new Date();
+    const weekdays = new Array(7);
     weekdays[0] = "Sunday";
     weekdays[1] = "Monday";
     weekdays[2] = "Tuesday";
@@ -99,10 +80,55 @@ function printWeather(data) {
     weekdays[6] = "Saturday";
 
     // convert farenheit to celcius
-    let celsius = Math.round(parseFloat(data.main.temp)-273.15);
+    const celsius = Math.round(parseFloat(weatherData.main.temp)-273.15);
 
-    cityName.innerHTML = data.name;
+    cityName.innerHTML = weatherData.name;
     weekday.innerHTML = weekdays[day.getDay()];
     temp.innerHTML =  celsius + '&deg;';
-    condition.innerHTML = data.weather[0].description;
+    condition.innerHTML = weatherData.weather[0].description;
+}
+
+function attractionsVisible() {
+    const attractionsTitle = document.getElementById('attractions-title');
+    const attractionBoxes = document.querySelectorAll('.attraction-box');
+
+    attractionsTitle.style.visibility = 'visible';
+    attractionBoxes.forEach(element => {
+        element.style.visibility = 'visible';
+    });
+}
+
+function attractionsHidden() {
+    const attractionsTitle = document.getElementById('attractions-title');
+    const attractionBoxes = document.querySelectorAll('.attraction-box');
+
+    attractionsTitle.style.visibility = 'hidden';
+    attractionBoxes.forEach(element => {
+        element.style.visibility = 'hidden';
+    });
+}
+
+function getAttractions(cityName) {
+    const clientId = 'UYOWJJN4WOZ5ZIY1QRZHEICMBEYBOCPY32WTFIXLORHA5SOV';
+    const clientSecret = 'XUX5YLKCVFZMECQSNNYGM0R1K5R1CPCIRGJXT1XBHWOC4FOR';
+
+    /* i fetchen så skickas en förfrågan till api-urlen - får tillbaka ett svar i form av ett objekt (respons) 
+    - sen konverterar det objektet till ett json objekt - attractionData = json objektet */
+    fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityName + '&limit=10&v=20210209')
+    .then(function(response) { return response.json() })
+    .then(function(attractionData) {
+        //printAttractions(attractionData)
+        console.log(attractionData);
+    })
+    .catch(function() {
+
+    });
+}
+
+function printAttractions(attractionData) {
+    const attBoxTitle = document.querySelectorAll("att-box1");
+    const attbox2 = document.getElementById("att-box2");
+    const attbox3 = document.getElementById("att-box3");
+
+    attbox
 }
