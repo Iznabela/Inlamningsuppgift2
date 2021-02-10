@@ -6,7 +6,6 @@
 
 html {
     background-color: #A9CCE3;
-    
 }
 
 body {
@@ -24,22 +23,39 @@ body {
 
 .header {
     display: flex;
-    justify-content: left;
-    background-color: #2f4757;
+    justify-content: center;
+    max-width: 100%;
+    background-color: rgb(47, 71, 87, .9);
     padding: 20px;
 }
 
 #plane {
     width: 90px;
     padding: 10px;
+    margin-right: 20px;
     filter: drop-shadow(2.5px 2.5px 10px #b3e7f8);
+    position: relative;
+    animation: planefly 4s ease-in;
+    animation-timing-function: cubic-bezier(0.42,0,0.58,1);
 }
 
-h1 {
+.header h1 {
     font-size: 60px;
     align-self: center;
     padding: 10px;
+    position: relative;
     text-shadow: 0 0 0.30em #b3e7f8;
+    animation: h1move 1s ease-in;
+}
+
+@keyframes planefly {
+    from {left: -1300px;}
+    to {left: 0px;}
+}
+
+@keyframes h1move {
+    from {left: 1300px;}
+    to {left: 0px;}
 }
 
 .search-section {
@@ -52,7 +68,7 @@ h1 {
 
 #city-search {
     height: 80px;
-    width: 280px;
+    width: 260px;
     padding: 20px;
     margin: 20px;
     align-self: center;
@@ -60,10 +76,15 @@ h1 {
     border: none;
     background-color: whitesmoke;
     box-shadow: outset 0 0 5px 5px #2f4757;
+    transition: width 0.5s;
 }
 
 #city-search:focus {
     outline: none;
+}
+
+#city-search:hover {
+    width: 280px;
 }
 
 #search-button {
@@ -72,17 +93,21 @@ h1 {
     width: 100px;
     align-self: center;
     border: none;
-    box-shadow: outset 0 0 5px 5px #2f4757;
-    background-color: whitesmoke;
+    background-color: rgba(79, 118, 145);
+    box-shadow: 0px 8px 15px rgba(93, 139, 170, 0.9);
+    transition: all 0.4s ease 0s;
 }
 
 #search-button:hover {
     cursor: pointer;
-    background-color: #2f4757;
+    background-color: whitesmoke;
+    box-shadow: 0px 15px 20px rgba(79, 118, 145, 0.4);
+    color: #fff;
+    transform: translateX(2px);
 }
 
 #search-button:hover p {
-    color: white;
+    color: black;
 }
 
 #search-button:focus {
@@ -256,7 +281,7 @@ h3 {
 
 footer {
     display: flex;
-    background-color: #2f4757;
+    background-color: rgb(47, 71, 87, .9);
     height: 40px;
     justify-content: flex-end;
     padding: 50px 10px 20px 0;
