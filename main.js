@@ -89,15 +89,15 @@ function printWeather(weatherData) {
 }
 
 function attractionsVisible() {
-    const attractionsTitle = document.getElementById('attractions-title');
+    const attractionsTitle = document.getElementById('title-container');
     const attractions = document.getElementById('attractions');
 
-    attractionsTitle.style.display = 'block';
+    attractionsTitle.style.display = 'inline';
     attractions.style.display = 'grid';
 }
 
 function attractionsHidden() {
-    const attractionsTitle = document.getElementById('attractions-title');
+    const attractionsTitle = document.getElementById('title-container');
     const attractions = document.getElementById('attractions');
 
     attractionsTitle.style.display = 'none';
@@ -122,10 +122,50 @@ function getAttractions(cityName) {
 }
 
 function printAttractions(attractionData) {
-
     let i;
-    for (i = 0; i < 3; i++) {
-        document.getElementById('attbox' + i + '-title').innerHTML = attractionData.response.groups[0].items[i].venue.name;
-        document.getElementById('attbox' + i + '-adress').innerHTML = attractionData.response.groups[0].items[i].venue.location.address;
+    for (i = 0; i < 10; i++) {
+        let newBox = document.createElement('div');
+        newBox.className = 'attraction-box';
+        if (i < 1) {
+            newBox.style.gridColumnStart = 3;
+            newBox.style.gridColumnEnd = 4;
+            newBox.style.gridRowStart = 0;
+            newBox.style.gridRowEnd = 1;
+        }
+        else if (i > 0 && i < 4) {
+            newBox.style.gridColumnStart = i + 1;
+            newBox.style.gridColumnEnd = i + 2;
+            newBox.style.gridRowStart = 1;
+            newBox.style.gridRowEnd = 2;
+        }
+        else if (i > 3 && i < 7) {
+            newBox.style.gridColumnStart = i - 2;
+            newBox.style.gridColumnEnd = i - 1;
+            newBox.style.gridRowStart = 2;
+            newBox.style.gridRowEnd = 3;
+        }
+        else {
+            newBox.style.gridColumnStart = i - 5;
+            newBox.style.gridColumnEnd = i - 4;
+            newBox.style.gridRowStart = 3;
+            newBox.style.gridRowEnd = 4;
+        }
+
+
+        let newH3 = document.createElement('h3');
+        newH3.id = 'attbox' + i + '-title';
+        newH3.innerHTML = attractionData.response.groups[0].items[i].venue.name;
+        newBox.appendChild(newH3);
+
+        let newP = document.createElement('p');
+        newP.id = 'attbox' + i + '-adress';
+        newP.innerHTML = attractionData.response.groups[0].items[i].venue.location.address;
+        newBox.appendChild(newP);
+
+        let newImg = document.createElement('img');
+        newImg.id = 'attbox' + i + '-icon';
+        newBox.appendChild(newImg);
+
+        document.getElementById('attractions').appendChild(newBox);
     }
 }
