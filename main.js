@@ -56,6 +56,7 @@ function getWeather(cityName) {
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '')
         .then(function (response) { return response.json() })
         .then(function (weatherData) {
+            console.log(weatherData);
             printWeather(weatherData);
         })
         .catch(function () {
@@ -86,6 +87,8 @@ function printWeather(weatherData) {
     weekday.innerHTML = weekdays[day.getDay()];
     temp.innerHTML = celsius + '&deg;';
     condition.innerHTML = weatherData.weather[0].description;
+    let icon = weatherData.weather[0].icon;
+    document.getElementById('cond-img').src = 'http://openweathermap.org/img/wn/' + icon + "@2x.png";
 }
 
 function attractionsVisible() {
