@@ -164,6 +164,7 @@ function printAttractions(attractionData) {
 
         let newImg = document.createElement('img');
         newImg.id = 'attbox' + i + '-icon';
+        newImg.src = attractionData.response.groups[0].items[i].venue.categories[0].icon.prefix + "88.png";
         newBox.appendChild(newImg);
 
         document.getElementById('attractions').appendChild(newBox);
