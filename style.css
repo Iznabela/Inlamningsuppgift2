@@ -5,7 +5,7 @@
 }
 
 body {
-    max-width: 1100px;
+    max-width: 1300px;
     margin: auto;
     height: fit-content;
     border: 3px solid black;
@@ -101,7 +101,7 @@ h3 {
 }
 
 #weather {
-    visibility: hidden;
+    display: none;
 }
 
 .weather-box {
@@ -141,16 +141,15 @@ h3 {
 }
 
 #attractions-title {
-    visibility: hidden;
+    display: none;
 }
 
 .attractions {
-    display: flex;
+    display: none;
     justify-content: space-around;
 }
 
 .attraction-box {
-    visibility: hidden;
     border: 3px double black;
     width: 300px;
     height: 130px;
