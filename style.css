@@ -161,74 +161,113 @@ body {
 
 h2 {
     font-size: 48px;
-    padding: 20px;
+    padding: 80px;
 }
 
 h3 {
-    font-size: 24px;
-    font-weight: 100;
+    width: fit-content;
+    font-size: 36px;
+    font-weight: 400;
     margin: auto;
-    width: 200px;
+    margin-bottom: 20px;
+}
+
+#city-name {
+    display: none;
+    align-self: center;
+    margin-left: 10px;
+    font-size: 72px;
+    font-weight: 400;
+    margin-bottom: 100px;
+    float:left;
+}
+
+#current-weather {
+    font-size: 44px;
+    font-style: oblique;
 }
 
 #weather {
     display: none;
+    justify-content: center;
 }
 
 .weather-box {
-    border-radius: 10px;
-    width: 300px;
-    padding: 30px;
-    margin: 0 auto 50px auto;
-    font-size: 18px;
-    text-align: center;
-}
-
-.weather-items {
-    display: flex;
-    flex-wrap: nowrap;
-}
-
-#temp-img {
-    height: 30px;
-    margin-left: 50px;
-    margin-right: 5px;
-}
-
-#cond-img {
-    width: 100px;
-    margin-left: 70px;
-    margin-right: 5px;
+    display: grid;
+    grid-template-columns: 6.25% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 6.25%;
+    grid-template-rows: 50% 30% 20%;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    text-shadow: 0 0 0.40em #ebf5fa;
+    background-color: rgb(47, 71, 87, .6);
+    align-self: center;
+    border-radius: 5px;
+    width: 500px;
+    height: 250px;
+    margin: auto;
+    margin-bottom: 150px;
 }
 
 .weather-box h3 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    padding: 10px;
+    align-self: center;
+    justify-self: center;
+    grid-column: 4/7;
+    grid-row: 1/2;
+    font-size: 44px;
 }
 
-.weather-box p {
-    padding: 3px;
+#temp-img {
+    align-self: center;
+    justify-self: center;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    height: 50px;
 }
 
-.title-container {
-    display: inline;
-    text-align: center;
+#temp {
+    font-size: 24px;
+    align-self: center;
+    justify-self: center;
+    grid-column: 3/4;
+    grid-row: 2/3;
+}
+
+#cond-img {
+    align-self: center;
+    justify-self: center;
+    grid-column: 5/6;
+    grid-row: 2/3;
+    width: 100px;
+}
+
+#condition {
+    width: fit-content;
+    font-size: 22px;
+    align-self: center;
+    justify-self: center;
+    grid-column: 6/9;
+    grid-row: 2/3;
 }
 
 #attractions-title {
-    font-size: 48px;
-    padding: 30px;
+    display: none; 
+    width: fit-content;
+    font-size: 44px;
+    font-style: oblique;
+    font-weight: 400;
+    margin: auto;
+    margin-bottom: 20px;
 }
 
 .attractions {
     display: none;
-    grid-template-columns: 5% 30% 30% 30% 5%;
-    grid-template-rows: 200px auto;
+    grid-template-columns: auto 40% 40% 40% auto;
+    grid-template-rows: 20% 20% 20% 20% 20%;
+    margin: 0;
+    justify-content: center;
 }
 
 #pic1{
-    width: 150px;
+    width: 250px;
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 0;
@@ -240,7 +279,7 @@ h3 {
 }
 
 #pic2{
-    height: 150px;
+    height: 250px;
     grid-column-start: 4;
     grid-column-end: 5;
     grid-row-start: 0;
@@ -252,31 +291,47 @@ h3 {
 }
 
 .attraction-box {
-    display: block;
-    box-shadow: 0px 10px 1px #ddd, 0 10px 20px #ccc;
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: 35% 35% 30%;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     text-shadow: 0 0 0.40em #ebf5fa;
     background-color: rgb(47, 71, 87, .6);
     justify-self: center;
     align-self: center;
-    justify-content: center;
     border-radius: 5px;
-    width: 400px;
-    height: 200px;
+    width: 500px;
+    height: 300px;
     padding: 10px;
-    margin: 30px;
+    margin: 90px;
 }
 
 .attraction-box h3 {
-    margin: 0;
-    width: 400px;
-    font-size: 36px;
-    padding: 3px 3px 3px 3px;
+    align-self: center;
+    margin: 20px 0 0 20px;
+    font-size: 44px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 0;
+    grid-row-end: 2;
 }
 
 .attraction-box p {
-    font-size: 26px;
-    padding: 10px;
-    margin: auto;
+    align-self: center;
+    justify-self: center;
+    font-size: 22px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+
+.att-icons {
+    align-self: center;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 4;
 }
 
 footer {
