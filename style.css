@@ -25,8 +25,9 @@ body {
     display: flex;
     justify-content: center;
     max-width: 100%;
-    background-color: rgb(105, 105, 105, .8);
+    background-color: #494949;
     padding: 20px;
+    box-shadow: rgba(93, 89, 50, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 #plane {
@@ -190,7 +191,7 @@ h3 {
     grid-template-rows: 50% 30% 20%;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     text-shadow: 0 0 0.40em #ebf5fa;
-    background-color: rgb(196, 145, 2, .4);
+    background-color: rgb(196, 145, 2, .5);
     align-self: center;
     border-radius: 5px;
     width: 550px;
@@ -292,7 +293,7 @@ h3 {
     grid-template-rows: 35% 35% 30%;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     text-shadow: 0 0 0.40em #ebf5fa;
-    background-color: rgb(196, 145, 2, .4);
+    background-color: rgb(196, 145, 2, .5);
     justify-self: center;
     align-self: center;
     border-radius: 5px;
