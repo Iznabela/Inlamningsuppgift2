@@ -33,6 +33,7 @@ window.onload = function () {
             }
         }
         else {
+            document.getElementById('city-name').style.display = 'block';
             getWeather(city);
             getAttractions(city);
             weatherVisible();
@@ -92,15 +93,15 @@ function printWeather(weatherData) {
 }
 
 function attractionsVisible() {
-    const attractionsTitle = document.getElementById('title-container');
+    const attractionsTitle = document.getElementById('attractions-title');
     const attractions = document.getElementById('attractions');
 
-    attractionsTitle.style.display = 'inline';
+    attractionsTitle.style.display = 'block';
     attractions.style.display = 'grid';
 }
 
 function attractionsHidden() {
-    const attractionsTitle = document.getElementById('title-container');
+    const attractionsTitle = document.getElementById('attractions-title');
     const attractions = document.getElementById('attractions');
 
     attractionsTitle.style.display = 'none';
