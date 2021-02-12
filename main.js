@@ -37,7 +37,7 @@ window.onload = function () {
         else {
             document.getElementById('city-name').style.display = 'block';
             getWeather(city);
-            getAttractions(city);
+            getAttractions(city, filter);
             weatherVisible();
             attractionsVisible();
         }
@@ -110,7 +110,7 @@ function attractionsHidden() {
     attractions.style.display = 'none';
 }
 
-function getAttractions(cityName) {
+function getAttractions(cityName, filter) {
     const clientId = 'UYOWJJN4WOZ5ZIY1QRZHEICMBEYBOCPY32WTFIXLORHA5SOV';
     const clientSecret = 'XUX5YLKCVFZMECQSNNYGM0R1K5R1CPCIRGJXT1XBHWOC4FOR';
 
@@ -120,7 +120,7 @@ function getAttractions(cityName) {
     fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityName + '&limit=10&v=20210209')
         .then(function (response) { return response.json() })
         .then(function (attractionData) {
-            printAttractions(attractionData);
+            printAttractions(attractionData, filter);
             console.log(attractionData);
         })
         .catch(function () {
@@ -128,9 +128,19 @@ function getAttractions(cityName) {
         });
 }
 
-function printAttractions(attractionData) {
-    let i;
-    for (i = 0; i < 10; i++) {
+function printAttractions(attractionData, filter) {
+    let itemsArray = attractionData.response.groups[0].items;
+    let nameArray = [];
+    itemsArray.forEach(getNames);
+
+    function getNames(item) {
+        let attName = item.venue.name;
+        nameArray.push(attName);
+    }
+    if (filter.checked == true) {
+        nameArray.sort();
+    }
+    for (let i = 0; i < 10; i++) {
         let box = document.getElementById('attbox' + i);
         if (i < 1) {
             box.style.gridColumnStart = 3;
@@ -157,9 +167,8 @@ function printAttractions(attractionData) {
             box.style.gridRowEnd = 4;
         }
 
-
         let h3 = document.getElementById('attbox' + i + '-title');
-        h3.innerHTML = attractionData.response.groups[0].items[i].venue.name;
+        h3.innerHTML = nameArray[i];
         box.appendChild(h3);
 
         let p = document.getElementById('attbox' + i + '-adress');
@@ -172,8 +181,4 @@ function printAttractions(attractionData) {
 
         document.querySelector('.attractions').appendChild(box);
     }
-}
-
-function sortAttractions() {
-
 }
