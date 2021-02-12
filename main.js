@@ -35,7 +35,7 @@ window.onload = function () {
             }
         }
         else {
-            cityName.style.display = 'block';
+            document.getElementById('city-name').style.display = 'block';
             getWeather(city);
             getAttractions(city);
             weatherVisible();
@@ -96,7 +96,7 @@ function printWeather(weatherData) {
 
 function attractionsVisible() {
     const attractionsTitle = document.getElementById('attractions-title');
-    const attractions = document.querySelector('.attractions');
+    const attractions = document.getElementById('attractions');
 
     attractionsTitle.style.display = 'block';
     attractions.style.display = 'grid';
