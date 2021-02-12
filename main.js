@@ -15,7 +15,7 @@ window.onload = function () {
         let city = input.value;
         if (weatherCheckbox.checked == true) {
             if (attractionsCheckbox.checked == true) {
-                alert('ERROR');
+                alert('Please check either "Only weather" or "Only Attractions!');
             }
             else {
                 cityName.style.display = 'block';
@@ -26,10 +26,11 @@ window.onload = function () {
         }
         else if (attractionsCheckbox.checked == true) {
             if (weatherCheckbox.checked == true) {
-                alert('ERROR');
+                alert('Please check either "Only weather" or "Only Attractions!"');
             }
             else {
                 cityName.style.display = 'block';
+                getAttractions(city, filter);
                 attractionsVisible();
                 weatherHidden();
             }
