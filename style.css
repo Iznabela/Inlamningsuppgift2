@@ -258,7 +258,7 @@ h3 {
 .attractions {
     display: none;
     grid-template-columns: auto 40% 40% 40% auto;
-    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-template-rows: 25% 25% 25% 25%;
     margin: 0;
     justify-content: center;
 }

@@ -4,44 +4,55 @@ window.onload = function () {
     const weatherCheckbox = document.getElementById('checkbox-weather');
     const attractionsCheckbox = document.getElementById('checkbox-attractions');
     const filter = document.getElementById('filter');
-
     const searchButton = document.getElementById('search-button');
-    const cityName = document.getElementById('city-name');
     const input = document.getElementById('city-search');
-
+    let nameArray = [];
 
     if (searchButton.onclick = function () {
-        cityName.innerHTML = input.value;
-        let city = input.value;
-        if (weatherCheckbox.checked == true) {
-            if (attractionsCheckbox.checked == true) {
-                alert('ERROR');
-            }
-            else {
-                cityName.style.display = 'block';
-                getWeather(city);
-                weatherVisible();
-                attractionsHidden();
-            }
-        }
-        else if (attractionsCheckbox.checked == true) {
-            if (weatherCheckbox.checked == true) {
-                alert('ERROR');
-            }
-            else {
-                cityName.style.display = 'block';
-                attractionsVisible();
-                weatherHidden();
-            }
+        clearAttractions();
+        const cityInput = input.value;
+        configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput, nameArray) 
+        
+    });
+}
+
+function configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput, nameArray) {
+    if (weatherCheckbox.checked == true) {
+        if (attractionsCheckbox.checked == true) {
+            alert('ERROR');
         }
         else {
-            document.getElementById('city-name').style.display = 'block';
-            getWeather(city);
-            getAttractions(city, filter);
+            getWeather(cityInput);
             weatherVisible();
-            attractionsVisible();
+            attractionsHidden();
         }
-    });
+    }
+    else if (attractionsCheckbox.checked == true) {
+        if (weatherCheckbox.checked == true) {
+            alert('ERROR');
+        }
+        else {
+            getAttractions(cityInput, filter, nameArray);
+            attractionsVisible();
+            weatherHidden();
+        }
+    }
+    else {
+        getWeather(cityInput);
+        getAttractions(cityInput, filter, nameArray);
+        weatherVisible();
+        attractionsVisible();
+    }
+    document.getElementById('city-name').innerHTML = cityInput;
+    document.getElementById('city-name').style.display = 'block';
+}
+
+function clearAttractions() {
+    for(let i = 0; i < 10; i++) {
+        document.getElementById('attbox' + i + '-title').innerHTML = "";
+        document.getElementById('attbox' + i + '-adress').innerHTML = "";
+        document.getElementById('attbox' + i + '-icon').src = "";
+    }
 }
 
 function weatherVisible() {
@@ -57,13 +68,20 @@ function weatherHidden() {
 function getWeather(cityName) {
     const apiKey = '2679a1068897e9be48c436e6054fa94a';
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '')
-        .then(function (response) { return response.json() })
+        .then(function (response) {
+            if (response.ok) {
+                return response.json() 
+            } 
+            else {
+                return false;
+            }
+        })
         .then(function (weatherData) {
             console.log(weatherData);
             printWeather(weatherData);
         })
         .catch(function () {
-
+            return false;
         });
 }
 
@@ -110,7 +128,7 @@ function attractionsHidden() {
     attractions.style.display = 'none';
 }
 
-function getAttractions(cityName, filter) {
+function getAttractions(cityName, filter, nameArray) {
     const clientId = 'UYOWJJN4WOZ5ZIY1QRZHEICMBEYBOCPY32WTFIXLORHA5SOV';
     const clientSecret = 'XUX5YLKCVFZMECQSNNYGM0R1K5R1CPCIRGJXT1XBHWOC4FOR';
 
@@ -118,30 +136,49 @@ function getAttractions(cityName, filter) {
     - sen konverterar det objektet till ett json objekt - attractionData = json objektet */
     //const new URL("")
     fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityName + '&limit=10&v=20210209')
-        .then(function (response) { return response.json() })
+        .then(function (response) {
+            if (response.ok) {
+                return response.json(); 
+            }
+            else {
+                
+            }            
+        })
         .then(function (attractionData) {
-            printAttractions(attractionData, filter);
+            printAttractions(attractionData, filter, nameArray);
             console.log(attractionData);
         })
         .catch(function () {
-
+            return false;
         });
 }
 
-function printAttractions(attractionData, filter) {
+function printAttractions(attractionData, filter, nameArray) {
+    // empty nameArray
+    nameArray = [];
+    let venuesLength = attractionData.response.groups[0].items.length;
     let itemsArray = attractionData.response.groups[0].items;
-    let nameArray = [];
+    
+    // fill nameArray with names of the venues to be printed
     itemsArray.forEach(getNames);
-
     function getNames(item) {
         let attName = item.venue.name;
         nameArray.push(attName);
     }
+
+    // sort in alphabetic order if chosen
     if (filter.checked == true) {
         nameArray.sort();
     }
+
+    // hide all attraction boxes
     for (let i = 0; i < 10; i++) {
+        document.getElementById('attbox' + i).style.display = 'none';
+    }
+
+    for (let i = 0; i < venuesLength; i++) {
         let box = document.getElementById('attbox' + i);
+        box.style.display = 'grid';
         if (i < 1) {
             box.style.gridColumnStart = 3;
             box.style.gridColumnEnd = 4;
@@ -167,18 +204,18 @@ function printAttractions(attractionData, filter) {
             box.style.gridRowEnd = 4;
         }
 
+        
+
         let h3 = document.getElementById('attbox' + i + '-title');
         h3.innerHTML = nameArray[i];
-        box.appendChild(h3);
 
         let p = document.getElementById('attbox' + i + '-adress');
         p.innerHTML = attractionData.response.groups[0].items[i].venue.location.address;
-        box.appendChild(p);
+        if (p.innerHTML  == 'undefined') {
+            p.innerHTML = 'Okänd adress';
+        }
 
         let img = document.getElementById('attbox' + i + '-icon');
         img.src = attractionData.response.groups[0].items[i].venue.categories[0].icon.prefix + "88.png";
-        box.appendChild(img);
-
-        document.querySelector('.attractions').appendChild(box);
     }
 }
