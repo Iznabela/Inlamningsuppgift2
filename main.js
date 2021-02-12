@@ -18,6 +18,7 @@ window.onload = function () {
                 alert('ERROR');
             }
             else {
+                cityName.style.display = 'block';
                 getWeather(city);
                 weatherVisible();
                 attractionsHidden();
@@ -28,11 +29,13 @@ window.onload = function () {
                 alert('ERROR');
             }
             else {
+                cityName.style.display = 'block';
                 attractionsVisible();
                 weatherHidden();
             }
         }
         else {
+            cityName.style.display = 'block';
             getWeather(city);
             getAttractions(city);
             weatherVisible();
@@ -92,15 +95,15 @@ function printWeather(weatherData) {
 }
 
 function attractionsVisible() {
-    const attractionsTitle = document.getElementById('title-container');
-    const attractions = document.getElementById('attractions');
+    const attractionsTitle = document.getElementById('attractions-title');
+    const attractions = document.querySelector('.attractions');
 
-    attractionsTitle.style.display = 'inline';
+    attractionsTitle.style.display = 'block';
     attractions.style.display = 'grid';
 }
 
 function attractionsHidden() {
-    const attractionsTitle = document.getElementById('title-container');
+    const attractionsTitle = document.getElementById('attractions-title');
     const attractions = document.getElementById('attractions');
 
     attractionsTitle.style.display = 'none';
@@ -113,6 +116,7 @@ function getAttractions(cityName) {
 
     /* i fetchen så skickas en förfrågan till api-urlen - får tillbaka ett svar i form av ett objekt (respons) 
     - sen konverterar det objektet till ett json objekt - attractionData = json objektet */
+    //const new URL("")
     fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityName + '&limit=10&v=20210209')
         .then(function (response) { return response.json() })
         .then(function (attractionData) {
@@ -127,49 +131,49 @@ function getAttractions(cityName) {
 function printAttractions(attractionData) {
     let i;
     for (i = 0; i < 10; i++) {
-        let newBox = document.createElement('div');
-        newBox.className = 'attraction-box';
+        let box = document.getElementById('attbox' + i);
         if (i < 1) {
-            newBox.style.gridColumnStart = 3;
-            newBox.style.gridColumnEnd = 4;
-            newBox.style.gridRowStart = 0;
-            newBox.style.gridRowEnd = 1;
+            box.style.gridColumnStart = 3;
+            box.style.gridColumnEnd = 4;
+            box.style.gridRowStart = 0;
+            box.style.gridRowEnd = 1;
         }
         else if (i > 0 && i < 4) {
-            newBox.style.gridColumnStart = i + 1;
-            newBox.style.gridColumnEnd = i + 2;
-            newBox.style.gridRowStart = 1;
-            newBox.style.gridRowEnd = 2;
+            box.style.gridColumnStart = i + 1;
+            box.style.gridColumnEnd = i + 2;
+            box.style.gridRowStart = 1;
+            box.style.gridRowEnd = 2;
         }
         else if (i > 3 && i < 7) {
-            newBox.style.gridColumnStart = i - 2;
-            newBox.style.gridColumnEnd = i - 1;
-            newBox.style.gridRowStart = 2;
-            newBox.style.gridRowEnd = 3;
+            box.style.gridColumnStart = i - 2;
+            box.style.gridColumnEnd = i - 1;
+            box.style.gridRowStart = 2;
+            box.style.gridRowEnd = 3;
         }
         else {
-            newBox.style.gridColumnStart = i - 5;
-            newBox.style.gridColumnEnd = i - 4;
-            newBox.style.gridRowStart = 3;
-            newBox.style.gridRowEnd = 4;
+            box.style.gridColumnStart = i - 5;
+            box.style.gridColumnEnd = i - 4;
+            box.style.gridRowStart = 3;
+            box.style.gridRowEnd = 4;
         }
 
 
-        let newH3 = document.createElement('h3');
-        newH3.id = 'attbox' + i + '-title';
-        newH3.innerHTML = attractionData.response.groups[0].items[i].venue.name;
-        newBox.appendChild(newH3);
+        let h3 = document.getElementById('attbox' + i + '-title');
+        h3.innerHTML = attractionData.response.groups[0].items[i].venue.name;
+        box.appendChild(h3);
 
-        let newP = document.createElement('p');
-        newP.id = 'attbox' + i + '-adress';
-        newP.innerHTML = attractionData.response.groups[0].items[i].venue.location.address;
-        newBox.appendChild(newP);
+        let p = document.getElementById('attbox' + i + '-adress');
+        p.innerHTML = attractionData.response.groups[0].items[i].venue.location.address;
+        box.appendChild(p);
 
-        let newImg = document.createElement('img');
-        newImg.id = 'attbox' + i + '-icon';
-        newImg.src = attractionData.response.groups[0].items[i].venue.categories[0].icon.prefix + "88.png";
-        newBox.appendChild(newImg);
+        let img = document.getElementById('attbox' + i + '-icon');
+        img.src = attractionData.response.groups[0].items[i].venue.categories[0].icon.prefix + "88.png";
+        box.appendChild(img);
 
-        document.getElementById('attractions').appendChild(newBox);
+        document.querySelector('.attractions').appendChild(box);
     }
+}
+
+function sortAttractions() {
+
 }
