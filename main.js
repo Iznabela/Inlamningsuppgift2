@@ -1,28 +1,29 @@
 'use strict'
 
-window.onload = function () {
+window.onload = function loadPage() {
     const weatherCheckbox = document.getElementById('checkbox-weather');
     const attractionsCheckbox = document.getElementById('checkbox-attractions');
     const filter = document.getElementById('filter');
     const searchButton = document.getElementById('search-button');
     const input = document.getElementById('city-search');
+    let reload = false;
     let nameArray = [];
 
     if (searchButton.onclick = function () {
         clearAttractions();
         const cityInput = input.value;
-        configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput, nameArray) 
+        configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput, nameArray, reload) 
         
     });
 }
 
-function configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput, nameArray) {
+function configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput, nameArray, reload) {
     if (weatherCheckbox.checked == true) {
         if (attractionsCheckbox.checked == true) {
             alert('ERROR');
         }
         else {
-            getWeather(cityInput);
+            getWeather(cityInput, reload);
             weatherVisible();
             attractionsHidden();
         }
@@ -32,19 +33,27 @@ function configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput
             alert('ERROR');
         }
         else {
-            getAttractions(cityInput, filter, nameArray);
+            getAttractions(cityInput, filter, nameArray, reload);
             attractionsVisible();
             weatherHidden();
         }
     }
     else {
-        getWeather(cityInput);
-        getAttractions(cityInput, filter, nameArray);
-        weatherVisible();
+        getWeather(cityInput, reload);
+        getAttractions(cityInput, filter, nameArray, reload);
+        if (reload == false) {
+            weatherVisible();
         attractionsVisible();
+        document.getElementById('city-name').innerHTML = cityInput;
+        document.getElementById('city-name').style.display = 'block';
+        }
+        else {
+            window.location.reload();
+        }
+
+        
     }
-    document.getElementById('city-name').innerHTML = cityInput;
-    document.getElementById('city-name').style.display = 'block';
+    
 }
 
 function clearAttractions() {
@@ -65,23 +74,30 @@ function weatherHidden() {
     weather.style.display = 'none';
 }
 
-function getWeather(cityName) {
+function getWeather(cityName, reload) {
     const apiKey = '2679a1068897e9be48c436e6054fa94a';
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '')
-        .then(function (response) {
+        .then(response => {
             if (response.ok) {
-                return response.json() 
+                return response.json();
             } 
             else {
-                return false;
+                reload = true;
             }
         })
-        .then(function (weatherData) {
+        .then(weatherData => {
             console.log(weatherData);
-            printWeather(weatherData);
+            if (reload) {
+                alert('ERROR');
+                window.location.reload();
+            }
+            else {
+                printWeather(weatherData);
+            }
         })
-        .catch(function () {
-            return false;
+        .catch(error => {
+            reload = true;
+            console.error('error', error);
         });
 }
 
@@ -128,7 +144,7 @@ function attractionsHidden() {
     attractions.style.display = 'none';
 }
 
-function getAttractions(cityName, filter, nameArray) {
+function getAttractions(cityName, filter, nameArray, reload) {
     const clientId = 'UYOWJJN4WOZ5ZIY1QRZHEICMBEYBOCPY32WTFIXLORHA5SOV';
     const clientSecret = 'XUX5YLKCVFZMECQSNNYGM0R1K5R1CPCIRGJXT1XBHWOC4FOR';
 
@@ -136,20 +152,27 @@ function getAttractions(cityName, filter, nameArray) {
     - sen konverterar det objektet till ett json objekt - attractionData = json objektet */
     //const new URL("")
     fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityName + '&limit=10&v=20210209')
-        .then(function (response) {
+        .then(response => {
             if (response.ok) {
                 return response.json(); 
             }
             else {
-                
+                reload = true;
             }            
         })
-        .then(function (attractionData) {
-            printAttractions(attractionData, filter, nameArray);
-            console.log(attractionData);
+        .then(attractionData => {
+            if (reload) {
+                window.location.reload();
+            }
+            else {
+                printAttractions(attractionData, filter, nameArray);
+                console.log(attractionData);
+            }
+
         })
-        .catch(function () {
-            return false;
+        .catch(error => {
+            console.error('error', error);
+            reload = true;
         });
 }
 
