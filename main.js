@@ -1,29 +1,50 @@
 'use strict'
 
 window.onload = function loadPage() {
-    const weatherCheckbox = document.getElementById('checkbox-weather');
-    const attractionsCheckbox = document.getElementById('checkbox-attractions');
     const filter = document.getElementById('filter');
     const searchButton = document.getElementById('search-button');
-    const input = document.getElementById('city-search');
+    
+    let weatherData;
     let reload = false;
     let nameArray = [];
 
     if (searchButton.onclick = function () {
         clearAttractions();
-        const cityInput = input.value;
-        configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput, nameArray, reload) 
-        
+        const cityInput = document.getElementById('city-search').value;
+        getWeather(cityInput, reload, weatherData);
+        getAttractions(cityInput, reload, nameArray, filter);
     });
 }
 
-function configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput, nameArray, reload) {
+function checkIfContinueWeather(weatherData, reload) {
+    if (reload) {
+        window.location.reload();
+    }
+    else {
+        printWeather(weatherData);
+        configureSearch();
+    }
+}
+
+function checkIfContinueAttractions(attractionData, reload, nameArray, filter) {
+    if (reload) {
+        window.location.reload();
+    }
+    else {
+        printAttractions(attractionData, nameArray, filter);
+        configureSearch();
+    }
+}
+
+function configureSearch() {
+    const weatherCheckbox = document.getElementById('checkbox-weather');
+    const attractionsCheckbox = document.getElementById('checkbox-attractions');
+    const input = document.getElementById('city-search').value;
     if (weatherCheckbox.checked == true) {
         if (attractionsCheckbox.checked == true) {
             alert('ERROR');
         }
         else {
-            getWeather(cityInput, reload);
             weatherVisible();
             attractionsHidden();
         }
@@ -33,25 +54,15 @@ function configureSearch(weatherCheckbox, attractionsCheckbox, filter, cityInput
             alert('ERROR');
         }
         else {
-            getAttractions(cityInput, filter, nameArray, reload);
             attractionsVisible();
             weatherHidden();
         }
     }
     else {
-        getWeather(cityInput, reload);
-        getAttractions(cityInput, filter, nameArray, reload);
-        if (reload == false) {
-            weatherVisible();
+        weatherVisible();
         attractionsVisible();
-        document.getElementById('city-name').innerHTML = cityInput;
-        document.getElementById('city-name').style.display = 'block';
-        }
-        else {
-            window.location.reload();
-        }
-
-        
+        document.getElementById('city-name').innerHTML = input;
+        document.getElementById('city-name').style.display = 'block';        
     }
     
 }
@@ -74,30 +85,20 @@ function weatherHidden() {
     weather.style.display = 'none';
 }
 
-function getWeather(cityName, reload) {
+function getWeather(cityInput, reload) {
     const apiKey = '2679a1068897e9be48c436e6054fa94a';
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '')
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityInput + '&appid=' + apiKey + '')
         .then(response => {
             if (response.ok) {
                 return response.json();
             } 
-            else {
-                reload = true;
-            }
         })
         .then(weatherData => {
-            console.log(weatherData);
-            if (reload) {
-                alert('ERROR');
-                window.location.reload();
-            }
-            else {
-                printWeather(weatherData);
-            }
+            checkIfContinueWeather(weatherData, reload);
         })
-        .catch(error => {
+        .catch(function() {
+            alert('Something went wrong... Try again later!');
             reload = true;
-            console.error('error', error);
         });
 }
 
@@ -144,39 +145,29 @@ function attractionsHidden() {
     attractions.style.display = 'none';
 }
 
-function getAttractions(cityName, filter, nameArray, reload) {
+function getAttractions(cityInput, reload, nameArray, filter) {
     const clientId = 'UYOWJJN4WOZ5ZIY1QRZHEICMBEYBOCPY32WTFIXLORHA5SOV';
     const clientSecret = 'XUX5YLKCVFZMECQSNNYGM0R1K5R1CPCIRGJXT1XBHWOC4FOR';
 
     /* i fetchen så skickas en förfrågan till api-urlen - får tillbaka ett svar i form av ett objekt (respons) 
     - sen konverterar det objektet till ett json objekt - attractionData = json objektet */
     //const new URL("")
-    fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityName + '&limit=10&v=20210209')
+    fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityInput + '&limit=10&v=20210209')
         .then(response => {
             if (response.ok) {
                 return response.json(); 
-            }
-            else {
-                reload = true;
-            }            
+            }         
         })
         .then(attractionData => {
-            if (reload) {
-                window.location.reload();
-            }
-            else {
-                printAttractions(attractionData, filter, nameArray);
-                console.log(attractionData);
-            }
-
+            checkIfContinueAttractions(attractionData, reload, nameArray, filter);
         })
-        .catch(error => {
-            console.error('error', error);
+        .catch(function() {
+            alert('Something went wrong... Try again later!');
             reload = true;
         });
 }
 
-function printAttractions(attractionData, filter, nameArray) {
+function printAttractions(attractionData, nameArray, filter) {
     // empty nameArray
     nameArray = [];
     let venuesLength = attractionData.response.groups[0].items.length;
