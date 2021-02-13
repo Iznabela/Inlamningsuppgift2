@@ -16,84 +16,16 @@ window.onload = function loadPage() {
     });
 }
 
-function checkIfContinueWeather(weatherData, reload) {
-    if (reload) {
-        window.location.reload();
-    }
-    else {
-        printWeather(weatherData);
-        configureSearch();
-    }
-}
-
-function checkIfContinueAttractions(attractionData, reload, nameArray, filter) {
-    if (reload) {
-        window.location.reload();
-    }
-    else {
-        printAttractions(attractionData, nameArray, filter);
-        configureSearch();
-    }
-}
-
-function configureSearch() {
-    const weatherCheckbox = document.getElementById('checkbox-weather');
-    const attractionsCheckbox = document.getElementById('checkbox-attractions');
-    const input = document.getElementById('city-search').value;
-    if (weatherCheckbox.checked == true) {
-        if (attractionsCheckbox.checked == true) {
-            alert('ERROR');
-        }
-        else {
-            weatherVisible();
-            attractionsHidden();
-        }
-    }
-    else if (attractionsCheckbox.checked == true) {
-        if (weatherCheckbox.checked == true) {
-            alert('ERROR');
-        }
-        else {
-            attractionsVisible();
-            weatherHidden();
-        }
-    }
-    else {
-        weatherVisible();
-        attractionsVisible();
-        document.getElementById('city-name').innerHTML = input;
-        document.getElementById('city-name').style.display = 'block';        
-    }
-    
-}
-
-function clearAttractions() {
-    for(let i = 0; i < 10; i++) {
-        document.getElementById('attbox' + i + '-title').innerHTML = "";
-        document.getElementById('attbox' + i + '-adress').innerHTML = "";
-        document.getElementById('attbox' + i + '-icon').src = "";
-    }
-}
-
-function weatherVisible() {
-    const weather = document.getElementById('weather');
-    weather.style.display = 'block';
-}
-
-function weatherHidden() {
-    const weather = document.getElementById('weather');
-    weather.style.display = 'none';
-}
-
+// WEATHER
 function getWeather(cityInput, reload) {
     const apiKey = '2679a1068897e9be48c436e6054fa94a';
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityInput + '&appid=' + apiKey + '')
-        .then(response => {
+        .then(function(response) {
             if (response.ok) {
                 return response.json();
             } 
         })
-        .then(weatherData => {
+        .then(function(weatherData) {
             checkIfContinueWeather(weatherData, reload);
         })
         .catch(function() {
@@ -129,22 +61,29 @@ function printWeather(weatherData) {
     document.getElementById('cond-img').src = 'http://openweathermap.org/img/wn/' + icon + "@2x.png";
 }
 
-function attractionsVisible() {
-    const attractionsTitle = document.getElementById('attractions-title');
-    const attractions = document.getElementById('attractions');
-
-    attractionsTitle.style.display = 'block';
-    attractions.style.display = 'grid';
+function checkIfContinueWeather(weatherData, reload) {
+    if (reload) {
+        window.location.reload();
+    }
+    else {
+        printWeather(weatherData);
+        configureSearch();
+    }
 }
 
-function attractionsHidden() {
-    const attractionsTitle = document.getElementById('attractions-title');
-    const attractions = document.getElementById('attractions');
-
-    attractionsTitle.style.display = 'none';
-    attractions.style.display = 'none';
+function weatherVisible() {
+    const weather = document.getElementById('weather');
+    weather.style.display = 'block';
 }
 
+function weatherHidden() {
+    const weather = document.getElementById('weather');
+    weather.style.display = 'none';
+}
+
+
+
+// ATTRACTIONS
 function getAttractions(cityInput, reload, nameArray, filter) {
     const clientId = 'UYOWJJN4WOZ5ZIY1QRZHEICMBEYBOCPY32WTFIXLORHA5SOV';
     const clientSecret = 'XUX5YLKCVFZMECQSNNYGM0R1K5R1CPCIRGJXT1XBHWOC4FOR';
@@ -153,18 +92,26 @@ function getAttractions(cityInput, reload, nameArray, filter) {
     - sen konverterar det objektet till ett json objekt - attractionData = json objektet */
     //const new URL("")
     fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityInput + '&limit=10&v=20210209')
-        .then(response => {
+        .then(function(response) {
             if (response.ok) {
                 return response.json(); 
             }         
         })
-        .then(attractionData => {
+        .then(function(attractionData) {
             checkIfContinueAttractions(attractionData, reload, nameArray, filter);
         })
         .catch(function() {
             alert('Something went wrong... Try again later!');
             reload = true;
         });
+}
+
+function clearAttractions() {
+    for(let i = 0; i < 10; i++) {
+        document.getElementById('attbox' + i + '-title').innerHTML = "";
+        document.getElementById('attbox' + i + '-adress').innerHTML = "";
+        document.getElementById('attbox' + i + '-icon').src = "";
+    }
 }
 
 function printAttractions(attractionData, nameArray, filter) {
@@ -218,8 +165,6 @@ function printAttractions(attractionData, nameArray, filter) {
             box.style.gridRowEnd = 4;
         }
 
-        
-
         let h3 = document.getElementById('attbox' + i + '-title');
         h3.innerHTML = nameArray[i];
 
@@ -233,3 +178,74 @@ function printAttractions(attractionData, nameArray, filter) {
         img.src = attractionData.response.groups[0].items[i].venue.categories[0].icon.prefix + "88.png";
     }
 }
+
+function checkIfContinueAttractions(attractionData, reload, nameArray, filter) {
+    if (reload) {
+        window.location.reload();
+    }
+    else {
+        printAttractions(attractionData, nameArray, filter);
+        configureSearch();
+    }
+}
+
+function attractionsVisible() {
+    const attractionsTitle = document.getElementById('attractions-title');
+    const attractions = document.getElementById('attractions');
+
+    attractionsTitle.style.display = 'block';
+    attractions.style.display = 'grid';
+}
+
+function attractionsHidden() {
+    const attractionsTitle = document.getElementById('attractions-title');
+    const attractions = document.getElementById('attractions');
+
+    attractionsTitle.style.display = 'none';
+    attractions.style.display = 'none';
+}
+
+function configureSearch() {
+    const weatherCheckbox = document.getElementById('checkbox-weather');
+    const attractionsCheckbox = document.getElementById('checkbox-attractions');
+    const input = document.getElementById('city-search').value;
+    if (weatherCheckbox.checked == true) {
+        if (attractionsCheckbox.checked == true) {
+            alert('ERROR');
+        }
+        else {
+            weatherVisible();
+            attractionsHidden();
+        }
+    }
+    else if (attractionsCheckbox.checked == true) {
+        if (weatherCheckbox.checked == true) {
+            alert('ERROR');
+        }
+        else {
+            attractionsVisible();
+            weatherHidden();
+        }
+    }
+    else {
+        weatherVisible();
+        attractionsVisible();
+        document.getElementById('city-name').innerHTML = input;
+        document.getElementById('city-name').style.display = 'block';        
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
