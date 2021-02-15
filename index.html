@@ -13,16 +13,19 @@
         <h1>City Travel</h1>
     </div>
     <section class="search-section">
-        <input type="search" id="city-search" name="q" placeholder="City..." aria-label="Primary">
-        <button id="search-button" type="submit" value="enter"><p>Go</p></button>
-        <div class="checkboxes">
-            <input type="checkbox" id="checkbox-weather" value="weather">
-            <label for="checkbox-weather"><p>Only Weather</p></label><br>
-            <input type="checkbox" id="checkbox-attractions" value="attractions">
-            <label for="checkbox-attractions"><p>Only Attractions</p></label><br>
-            <input type="checkbox" id="filter" value="filter">
-            <label for="filter"><p>Filter Alfabetically</p></label><br>
+        <div class="search-container">
+            <input type="search" id="city-search" name="q" placeholder="City..." aria-label="Primary">
+            <button id="search-button" type="submit" value="enter"><p>Go</p></button>
+            <div class="checkboxes">
+                <input type="checkbox" id="checkbox-weather" value="weather">
+                <label for="checkbox-weather"><p>Only Weather</p></label><br>
+                <input type="checkbox" id="checkbox-attractions" value="attractions">
+                <label for="checkbox-attractions"><p>Only Attractions</p></label><br>
+                <input type="checkbox" id="filter" value="filter">
+                <label for="filter"><p>Filter Alfabetically</p></label><br>
+            </div>
         </div>
+        <p id="error-msg"></p>
     </section>
     <section class="result-section">
         <h2 id="city-name">Stadens namn</h2><br>

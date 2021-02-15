@@ -5,7 +5,6 @@ window.onload = function loadPage() {
     const searchButton = document.getElementById('search-button');
 
     let weatherData;
-    let reload = false;
     let nameArray = [];
 
     if (searchButton.onclick = function () {
