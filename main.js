@@ -2,9 +2,10 @@
 
 window.onload = function () {
     const searchButton = document.getElementById('search-button');
+    const searchInput = document.getElementById('city-search');
 
     if (searchButton.onclick = function () {
-        const cityInput = document.getElementById('city-search').value;
+        const cityInput = searchInput.value;
         document.getElementById('city-name').style.display = 'none';
         document.getElementById('error-msg').innerText = '';
         clearAttractions();
@@ -13,6 +14,12 @@ window.onload = function () {
 
         getWeather(cityInput);
         getAttractions(cityInput);
+    });
+
+    searchInput.addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+            searchButton.click();
+        }
     });
 }
 
@@ -135,16 +142,16 @@ function printAttractions(attractionData) {
     const items = attractionData.response.groups[0].items;
     const venues = [];
 
+    /* get venues from items array and push them to a new array 
+        (to be able to sort the objects by name) */
     items.forEach(createVenueArray);
     function createVenueArray(item) {
         let venue = item.venue;
         venues.push(venue);
     }
-
     const length = venues.length;
 
-    console.log(venues);
-
+    // sorting by venue names if filter is checked
     if (filter.checked) {
         venues.sort((a, b) => {
             if (a.name > b.name) {
@@ -156,9 +163,6 @@ function printAttractions(attractionData) {
             return 0;
         })
     }
-
-    //itemsCopy.sort(sortOn(this.venue.name));
-    //console.log(itemsCopy.venue.name);
 
     // printing the venues info to boxes and placing them in the grid
     for (let i = 0; i < length; i++) {
@@ -221,6 +225,7 @@ function attractionsHidden() {
     }
 }
 
+// showing/hiding content depending on what checkboxes are checked
 function configureSearch() {
     const weatherCheckbox = document.getElementById('checkbox-weather');
     const attractionsCheckbox = document.getElementById('checkbox-attractions');

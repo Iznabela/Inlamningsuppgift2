@@ -7,7 +7,7 @@
 
 body {
     display: block;
-    width: 2000px;
+    max-width: 2000px;
     background-image: url('img/pexels-gratisography-2255.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;  
@@ -20,8 +20,8 @@ body {
     justify-content: center;
     max-width: 100%;
     padding: 20px;
-    background-color: #494949;
-    box-shadow: rgba(93, 89, 50, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    background-color: #8c8c8c;
+    box-shadow: inset 0px 0px 2px 4px rgba(234,234,234,0.24)
 }
 
 #plane {
@@ -29,7 +29,7 @@ body {
     width: 90px;
     padding: 10px;
     margin-right: 20px;
-    filter: drop-shadow(2.5px 2.5px 10px rgb(247, 247, 247));
+    filter: drop-shadow(2.5px 2.5px 10px #FFF);
     animation: planefly 4s ease-out;
     animation-timing-function: cubic-bezier(0.42,0,0.58,1);
 }
@@ -44,7 +44,7 @@ body {
     align-self: center;
     font-size: 60px;
     padding: 10px;
-    text-shadow: 0 0 0.30em rgb(247, 247, 247);
+    text-shadow: 0 0 0.30em #FFF;
     animation: h1move 1s ease-out;
 }
 
@@ -68,6 +68,7 @@ body {
 }
 
 #error-msg {
+    position: relative;
     display: block;
     width: fit-content;
     margin: auto;
@@ -103,14 +104,14 @@ body {
     width: 100px;
     font-size: 28px;
     border: none;
-    background-color: rgb(196, 145, 2, .4);
-    box-shadow: 0px 8px 15px rgba(93, 139, 170, 0.9);
+    background-color: #c4910266;
+    box-shadow: inset 0px 0px 4px 5px rgba(255,242,207,0.24);
     transition: all 0.4s ease 0s;
 }
 
 #search-button:hover {
     cursor: pointer;
-    box-shadow: 0px 15px 20px rgba(79, 118, 145, 0.4);
+    box-shadow: 0px 15px 20px rgba(97, 71, 1, 0.2);
     transform: scale(1.1);
 }
 
@@ -174,17 +175,25 @@ h3 {
     font-size: 64px;
     font-weight: 400;
     padding: 80px;
+    animation: fadein 2s;
+}
+
+@keyframes fadein {
+    from { opacity: 0;}
+    to { opacity: 1;}
 }
 
 /* WEATHER */
 #current-weather {
     font-size: 44px;
     font-style: oblique;
+    animation: fadein 2s;
 }
 
 #weather {
     display: none;
     justify-content: center;
+    animation: fadein 2s;
 }
 
 .weather-box {
@@ -256,6 +265,7 @@ h3 {
     font-size: 44px;
     font-style: oblique;
     font-weight: 400;
+    animation: fadein 2s;
 }
 
 .attractions {
@@ -264,6 +274,7 @@ h3 {
     grid-template-columns: auto 40% 40% 40% auto;
     grid-template-rows: 25% 25% 25% 25%;
     margin: 0;
+    animation: fadein 2s;
 }
 
 #pic1{
@@ -345,10 +356,11 @@ footer {
     justify-content: flex-end;
     height: 40px;
     padding: 50px 10px 20px 0;
-    background-color: rgb(105, 105, 105, .9);
+    background-color: rgb(140, 140, 140, .8);
 }
 
 footer p {
+    font-size: 18px;
     padding: 10px;
     margin: 5px;
 }
