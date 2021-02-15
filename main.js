@@ -35,13 +35,13 @@ function getWeather(cityInput) {
                 return response.json();
             } 
             else if (response.status === 400 || response.status === 404) {
-                document.getElementById('error-msg').innerText = 'Could not find city... Did you spell it right? >> Error code: ' + response.status + ' <<';
+                document.getElementById('error-msg').innerText = 'Could not find "' + cityInput + '", did you spell it right?';
             }
             else if (response.status === 500) {
-                document.getElementById('error-msg').innerText = 'Could not reach weather API - internal server error... {Error code: ' + response.status + ']';
+                document.getElementById('error-msg').innerText = 'Could not reach API - internal server error.';
             }
             else {
-                document.getElementById('error-msg').innerText = 'Something went wrong... Please try again later! [Error code: ' + response.status + ']';
+                document.getElementById('error-msg').innerText = 'Something went wrong... [Error code: ' + response.status + ']';
             }
         })
         .then(function(weatherData) {
@@ -107,10 +107,10 @@ function getAttractions(cityInput, nameArray, filter) {
                 return response.json(); 
             }         
             else if (response.status === 400 || response.status === 404) {
-                document.getElementById('error-msg').innerText = 'Could not find city... Did you spell it right? >> Error code: ' + response.status + ' <<';
+                document.getElementById('error-msg').innerText = 'Could not find "' + cityInput + '", did you spell it right?';
             }
             else if (response.status === 500) {
-                document.getElementById('error-msg').innerText = 'Could not reach API- internal server error... [Error code: ' + response.status + ']';
+                document.getElementById('error-msg').innerText = 'Could not reach API - internal server error.';
             }
             else {
                 document.getElementById('error-msg').innerText = 'Something went wrong... Please try again later! [Error code: ' + response.status + ']';
@@ -220,7 +220,7 @@ function configureSearch() {
     const input = document.getElementById('city-search').value;
     if (weatherCheckbox.checked == true) {
         if (attractionsCheckbox.checked == true) {
-            alert('ERROR');
+            document.getElementById('error-msg').innerText = 'Cannot show "Only weather" and "Only Attractions" at the same time. Please choose one!';
         }
         else {
             document.getElementById('city-name').style.display = 'block';
@@ -229,14 +229,9 @@ function configureSearch() {
         }
     }
     else if (attractionsCheckbox.checked == true) {
-        if (weatherCheckbox.checked == true) {
-            alert('ERROR');
-        }
-        else {
             document.getElementById('city-name').style.display = 'block';
             attractionsVisible();
             weatherHidden();
-        }
     }
     else {
         document.getElementById('city-name').innerHTML = input;
