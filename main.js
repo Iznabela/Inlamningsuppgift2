@@ -134,7 +134,6 @@ function printAttractions(attractionData) {
     // get items array and the length of it
     const items = attractionData.response.groups[0].items;
     const venues = [];
-    let min = 0;
 
     items.forEach(createVenueArray);
     function createVenueArray(item) {
