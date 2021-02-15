@@ -60,11 +60,24 @@ body {
 }
 
 .search-section {
-    height: 250px;
+    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+}
+
+.search-container {
+    padding-top: 50px;
+    height: 120px;
     display: flex;
     justify-content: center;
-    padding-left: 270px;
-    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    padding-left: 310px;
+}
+
+#error-msg {
+    display: block;
+    margin: auto;
+    width: fit-content;
+    padding: 30px;
+    font-size: 18px;
+    color: indianred;
 }
 
 #city-search {
@@ -258,7 +271,7 @@ h3 {
 .attractions {
     display: none;
     grid-template-columns: auto 40% 40% 40% auto;
-    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-template-rows: 25% 25% 25% 25%;
     margin: 0;
     justify-content: center;
 }

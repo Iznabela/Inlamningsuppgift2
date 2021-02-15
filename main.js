@@ -1,70 +1,55 @@
 'use strict'
 
-window.onload = function () {
-    const weatherCheckbox = document.getElementById('checkbox-weather');
-    const attractionsCheckbox = document.getElementById('checkbox-attractions');
+window.onload = function loadPage() {
     const filter = document.getElementById('filter');
-
     const searchButton = document.getElementById('search-button');
-    const cityName = document.getElementById('city-name');
-    const input = document.getElementById('city-search');
 
+    let weatherData;
+    let reload = false;
+    let nameArray = [];
 
     if (searchButton.onclick = function () {
-        cityName.innerHTML = input.value;
-        let city = input.value;
-        if (weatherCheckbox.checked == true) {
-            if (attractionsCheckbox.checked == true) {
-                alert('Please check either "Only weather" or "Only Attractions!');
-            }
-            else {
-                cityName.style.display = 'block';
-                getWeather(city);
-                weatherVisible();
-                attractionsHidden();
-            }
-        }
-        else if (attractionsCheckbox.checked == true) {
-            if (weatherCheckbox.checked == true) {
-                alert('Please check either "Only weather" or "Only Attractions!"');
-            }
-            else {
-                cityName.style.display = 'block';
-                getAttractions(city, filter);
-                attractionsVisible();
-                weatherHidden();
-            }
-        }
-        else {
-            document.getElementById('city-name').style.display = 'block';
-            getWeather(city);
-            getAttractions(city, filter);
-            weatherVisible();
-            attractionsVisible();
-        }
+        document.getElementById('city-name').style.display = 'none';
+        document.getElementById('error-msg').innerText = '';
+        clearAttractions();
+        weatherHidden();
+        attractionsHidden();
+
+        const cityInput = document.getElementById('city-search').value;
+        getWeather(cityInput, weatherData);
+        getAttractions(cityInput, nameArray, filter);
     });
 }
 
-function weatherVisible() {
-    const weather = document.getElementById('weather');
-    weather.style.display = 'block';
-}
-
-function weatherHidden() {
-    const weather = document.getElementById('weather');
-    weather.style.display = 'none';
-}
-
-function getWeather(cityName) {
+// WEATHER
+function getWeather(cityInput) {
     const apiKey = '2679a1068897e9be48c436e6054fa94a';
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&appid=' + apiKey + '')
-        .then(function (response) { return response.json() })
-        .then(function (weatherData) {
-            console.log(weatherData);
-            printWeather(weatherData);
-        })
-        .catch(function () {
 
+    /* i fetchen så skickas en förfrågan till ett API med hjälp av en URL med specifika paramentrar (nycklar och userinput)
+        - om allt går som det ska skickas ett svar tillbaka (response) som sedan konverteras från 
+        en lång sträng till ett javascript objekt (JSON) och returneras till function-parametern 
+        i den sista "then" där vi då kan använda oss av datan vi vill komma åt */
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityInput + '&appid=' + apiKey + '')
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            }
+            else if (response.status === 400 || response.status === 404) {
+                document.getElementById('error-msg').innerText = 'Could not find "' + cityInput + '", did you spell it right?';
+            }
+            else if (response.status === 500) {
+                document.getElementById('error-msg').innerText = 'Could not reach API - internal server error.';
+            }
+            else {
+                document.getElementById('error-msg').innerText = 'Something went wrong... [Error code: ' + response.status + ']';
+            }
+        })
+        .then(function (weatherData) {
+            printWeather(weatherData);
+            configureSearch();
+        })
+        .catch(function (error) {
+            console.log(error.message);
         });
 }
 
@@ -95,54 +80,85 @@ function printWeather(weatherData) {
     document.getElementById('cond-img').src = 'http://openweathermap.org/img/wn/' + icon + "@2x.png";
 }
 
-function attractionsVisible() {
-    const attractionsTitle = document.getElementById('attractions-title');
-    const attractions = document.getElementById('attractions');
-
-    attractionsTitle.style.display = 'block';
-    attractions.style.display = 'grid';
+function weatherVisible() {
+    const weather = document.getElementById('weather');
+    weather.style.display = 'block';
 }
 
-function attractionsHidden() {
-    const attractionsTitle = document.getElementById('attractions-title');
-    const attractions = document.getElementById('attractions');
-
-    attractionsTitle.style.display = 'none';
-    attractions.style.display = 'none';
+function weatherHidden() {
+    const weather = document.getElementById('weather');
+    weather.style.display = 'none';
 }
 
-function getAttractions(cityName, filter) {
+
+
+// ATTRACTIONS
+function getAttractions(cityInput, nameArray, filter) {
     const clientId = 'UYOWJJN4WOZ5ZIY1QRZHEICMBEYBOCPY32WTFIXLORHA5SOV';
     const clientSecret = 'XUX5YLKCVFZMECQSNNYGM0R1K5R1CPCIRGJXT1XBHWOC4FOR';
 
-    /* i fetchen så skickas en förfrågan till api-urlen - får tillbaka ett svar i form av ett objekt (respons) 
-    - sen konverterar det objektet till ett json objekt - attractionData = json objektet */
-    //const new URL("")
-    fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityName + '&limit=10&v=20210209')
-        .then(function (response) { return response.json() })
-        .then(function (attractionData) {
-            printAttractions(attractionData, filter);
-            console.log(attractionData);
+    /* i fetchen så skickas en förfrågan till ett API med hjälp av en URL med specifika paramentrar 
+        - om allt går som det ska skickas ett svar tillbaka (response) som sedan konverteras från 
+        en lång sträng till ett javascript objekt (JSON) och returneras till function-parametern 
+        i den sista "then" där vi då kan använda oss av datan vi vill komma åt */
+    fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityInput + '&limit=10&v=20210209')
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            }
+            else if (response.status === 400 || response.status === 404) {
+                document.getElementById('error-msg').innerText = 'Could not find "' + cityInput + '", did you spell it right?';
+            }
+            else if (response.status === 500) {
+                document.getElementById('error-msg').innerText = 'Could not reach API - internal server error.';
+            }
+            else {
+                document.getElementById('error-msg').innerText = 'Something went wrong... Please try again later! [Error code: ' + response.status + ']';
+            }
         })
-        .catch(function () {
-
+        .then(function (attractionData) {
+            printAttractions(attractionData, nameArray, filter);
+            configureSearch();
+        })
+        .catch(function (error) {
+            console.log(error.message);
         });
 }
 
-function printAttractions(attractionData, filter) {
-    let itemsArray = attractionData.response.groups[0].items;
-    let nameArray = [];
-    itemsArray.forEach(getNames);
+function clearAttractions() {
+    for (let i = 0; i < 10; i++) {
+        document.getElementById('attbox' + i + '-title').innerHTML = "";
+        document.getElementById('attbox' + i + '-adress').innerHTML = "";
+        document.getElementById('attbox' + i + '-icon').src = "";
+    }
+}
 
+function printAttractions(attractionData, nameArray, filter) {
+    // empty nameArray
+    nameArray = [];
+    let venuesLength = attractionData.response.groups[0].items.length;
+    let itemsArray = attractionData.response.groups[0].items;
+
+    // fill nameArray with names of the venues to be printed
+    itemsArray.forEach(getNames);
     function getNames(item) {
         let attName = item.venue.name;
         nameArray.push(attName);
     }
+
+    // sort in alphabetic order if chosen
     if (filter.checked == true) {
         nameArray.sort();
     }
+
+    // hide all attraction boxes
     for (let i = 0; i < 10; i++) {
+        document.getElementById('attbox' + i).style.display = 'none';
+    }
+
+    for (let i = 0; i < venuesLength; i++) {
         let box = document.getElementById('attbox' + i);
+        box.style.display = 'grid';
         if (i < 1) {
             box.style.gridColumnStart = 3;
             box.style.gridColumnEnd = 4;
@@ -170,16 +186,72 @@ function printAttractions(attractionData, filter) {
 
         let h3 = document.getElementById('attbox' + i + '-title');
         h3.innerHTML = nameArray[i];
-        box.appendChild(h3);
 
         let p = document.getElementById('attbox' + i + '-adress');
         p.innerHTML = attractionData.response.groups[0].items[i].venue.location.address;
-        box.appendChild(p);
+        if (p.innerHTML == 'undefined') {
+            p.innerHTML = 'Okänd adress';
+        }
 
         let img = document.getElementById('attbox' + i + '-icon');
         img.src = attractionData.response.groups[0].items[i].venue.categories[0].icon.prefix + "88.png";
-        box.appendChild(img);
-
-        document.querySelector('.attractions').appendChild(box);
     }
 }
+
+function attractionsVisible() {
+    const attractionsTitle = document.getElementById('attractions-title');
+    const attractions = document.getElementById('attractions');
+
+    attractionsTitle.style.display = 'block';
+    attractions.style.display = 'grid';
+}
+
+function attractionsHidden() {
+    const attractionsTitle = document.getElementById('attractions-title');
+    const attractions = document.getElementById('attractions');
+
+    attractionsTitle.style.display = 'none';
+    attractions.style.display = 'none';
+}
+
+function configureSearch() {
+    const weatherCheckbox = document.getElementById('checkbox-weather');
+    const attractionsCheckbox = document.getElementById('checkbox-attractions');
+    const input = document.getElementById('city-search').value;
+    if (weatherCheckbox.checked == true) {
+        if (attractionsCheckbox.checked == true) {
+            document.getElementById('error-msg').innerText = 'Cannot show "Only weather" and "Only Attractions" at the same time. Please choose one!';
+        }
+        else {
+            document.getElementById('city-name').style.display = 'block';
+            weatherVisible();
+            attractionsHidden();
+        }
+    }
+    else if (attractionsCheckbox.checked == true) {
+        document.getElementById('city-name').style.display = 'block';
+        attractionsVisible();
+        weatherHidden();
+    }
+    else {
+        document.getElementById('city-name').innerHTML = input;
+        document.getElementById('city-name').style.display = 'block';
+        weatherVisible();
+        attractionsVisible();
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
