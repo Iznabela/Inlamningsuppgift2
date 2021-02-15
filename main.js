@@ -9,28 +9,47 @@ window.onload = function loadPage() {
     let nameArray = [];
 
     if (searchButton.onclick = function () {
+        document.getElementById('city-name').style.display = 'none';
+        document.getElementById('error-msg').innerText = '';
         clearAttractions();
+        weatherHidden();
+        attractionsHidden();
+        
         const cityInput = document.getElementById('city-search').value;
-        getWeather(cityInput, reload, weatherData);
-        getAttractions(cityInput, reload, nameArray, filter);
+        getWeather(cityInput, weatherData);
+        getAttractions(cityInput, nameArray, filter);
     });
 }
 
 // WEATHER
-function getWeather(cityInput, reload) {
+function getWeather(cityInput) {
     const apiKey = '2679a1068897e9be48c436e6054fa94a';
+
+    /* i fetchen så skickas en förfrågan till ett API med hjälp av en URL med specifika paramentrar (nycklar och userinput)
+        - om allt går som det ska skickas ett svar tillbaka (response) som sedan konverteras från 
+        en lång sträng till ett javascript objekt (JSON) och returneras till function-parametern 
+        i den sista "then" där vi då kan använda oss av datan vi vill komma åt */
     fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityInput + '&appid=' + apiKey + '')
         .then(function(response) {
             if (response.ok) {
                 return response.json();
             } 
+            else if (response.status === 400 || response.status === 404) {
+                document.getElementById('error-msg').innerText = 'Could not find city... Did you spell it right? >> Error code: ' + response.status + ' <<';
+            }
+            else if (response.status === 500) {
+                document.getElementById('error-msg').innerText = 'Could not reach weather API - internal server error... {Error code: ' + response.status + ']';
+            }
+            else {
+                document.getElementById('error-msg').innerText = 'Something went wrong... Please try again later! [Error code: ' + response.status + ']';
+            }
         })
         .then(function(weatherData) {
-            checkIfContinueWeather(weatherData, reload);
+            printWeather(weatherData);
+            configureSearch();
         })
-        .catch(function() {
-            alert('Something went wrong... Try again later!');
-            reload = true;
+        .catch(function(error) {
+            console.log(error.message);
         });
 }
 
@@ -61,16 +80,6 @@ function printWeather(weatherData) {
     document.getElementById('cond-img').src = 'http://openweathermap.org/img/wn/' + icon + "@2x.png";
 }
 
-function checkIfContinueWeather(weatherData, reload) {
-    if (reload) {
-        window.location.reload();
-    }
-    else {
-        printWeather(weatherData);
-        configureSearch();
-    }
-}
-
 function weatherVisible() {
     const weather = document.getElementById('weather');
     weather.style.display = 'block';
@@ -84,25 +93,35 @@ function weatherHidden() {
 
 
 // ATTRACTIONS
-function getAttractions(cityInput, reload, nameArray, filter) {
+function getAttractions(cityInput, nameArray, filter) {
     const clientId = 'UYOWJJN4WOZ5ZIY1QRZHEICMBEYBOCPY32WTFIXLORHA5SOV';
     const clientSecret = 'XUX5YLKCVFZMECQSNNYGM0R1K5R1CPCIRGJXT1XBHWOC4FOR';
 
-    /* i fetchen så skickas en förfrågan till api-urlen - får tillbaka ett svar i form av ett objekt (respons) 
-    - sen konverterar det objektet till ett json objekt - attractionData = json objektet */
-    //const new URL("")
+    /* i fetchen så skickas en förfrågan till ett API med hjälp av en URL med specifika paramentrar 
+        - om allt går som det ska skickas ett svar tillbaka (response) som sedan konverteras från 
+        en lång sträng till ett javascript objekt (JSON) och returneras till function-parametern 
+        i den sista "then" där vi då kan använda oss av datan vi vill komma åt */
     fetch('https://api.foursquare.com/v2/venues/explore?client_id=' + clientId + '&client_secret=' + clientSecret + '&near=' + cityInput + '&limit=10&v=20210209')
         .then(function(response) {
             if (response.ok) {
                 return response.json(); 
             }         
+            else if (response.status === 400 || response.status === 404) {
+                document.getElementById('error-msg').innerText = 'Could not find city... Did you spell it right? >> Error code: ' + response.status + ' <<';
+            }
+            else if (response.status === 500) {
+                document.getElementById('error-msg').innerText = 'Could not reach API- internal server error... [Error code: ' + response.status + ']';
+            }
+            else {
+                document.getElementById('error-msg').innerText = 'Something went wrong... Please try again later! [Error code: ' + response.status + ']';
+            }
         })
         .then(function(attractionData) {
-            checkIfContinueAttractions(attractionData, reload, nameArray, filter);
+            printAttractions(attractionData, nameArray, filter);
+            configureSearch();
         })
-        .catch(function() {
-            alert('Something went wrong... Try again later!');
-            reload = true;
+        .catch(function(error) {
+            console.log(error.message);
         });
 }
 
@@ -179,16 +198,6 @@ function printAttractions(attractionData, nameArray, filter) {
     }
 }
 
-function checkIfContinueAttractions(attractionData, reload, nameArray, filter) {
-    if (reload) {
-        window.location.reload();
-    }
-    else {
-        printAttractions(attractionData, nameArray, filter);
-        configureSearch();
-    }
-}
-
 function attractionsVisible() {
     const attractionsTitle = document.getElementById('attractions-title');
     const attractions = document.getElementById('attractions');
@@ -214,6 +223,7 @@ function configureSearch() {
             alert('ERROR');
         }
         else {
+            document.getElementById('city-name').style.display = 'block';
             weatherVisible();
             attractionsHidden();
         }
@@ -223,15 +233,16 @@ function configureSearch() {
             alert('ERROR');
         }
         else {
+            document.getElementById('city-name').style.display = 'block';
             attractionsVisible();
             weatherHidden();
         }
     }
     else {
-        weatherVisible();
-        attractionsVisible();
         document.getElementById('city-name').innerHTML = input;
-        document.getElementById('city-name').style.display = 'block';        
+        document.getElementById('city-name').style.display = 'block';
+        weatherVisible();
+        attractionsVisible();   
     }
     
 }
