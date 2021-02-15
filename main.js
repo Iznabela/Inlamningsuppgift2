@@ -1,22 +1,18 @@
 'use strict'
 
-window.onload = function loadPage() {
-    const filter = document.getElementById('filter');
+window.onload = function () {
     const searchButton = document.getElementById('search-button');
 
-    let weatherData;
-    let nameArray = [];
-
     if (searchButton.onclick = function () {
+        const cityInput = document.getElementById('city-search').value;
         document.getElementById('city-name').style.display = 'none';
         document.getElementById('error-msg').innerText = '';
         clearAttractions();
         weatherHidden();
         attractionsHidden();
 
-        const cityInput = document.getElementById('city-search').value;
-        getWeather(cityInput, weatherData);
-        getAttractions(cityInput, nameArray, filter);
+        getWeather(cityInput);
+        getAttractions(cityInput);
     });
 }
 
@@ -92,7 +88,15 @@ function weatherHidden() {
 
 
 // ATTRACTIONS
-function getAttractions(cityInput, nameArray, filter) {
+function clearAttractions() {
+    for (let i = 0; i < 10; i++) {
+        document.getElementById('attbox' + i + '-title').innerHTML = "";
+        document.getElementById('attbox' + i + '-adress').innerHTML = "";
+        document.getElementById('attbox' + i + '-icon').src = "";
+    }
+}
+
+function getAttractions(cityInput) {
     const clientId = 'UYOWJJN4WOZ5ZIY1QRZHEICMBEYBOCPY32WTFIXLORHA5SOV';
     const clientSecret = 'XUX5YLKCVFZMECQSNNYGM0R1K5R1CPCIRGJXT1XBHWOC4FOR';
 
@@ -116,7 +120,7 @@ function getAttractions(cityInput, nameArray, filter) {
             }
         })
         .then(function (attractionData) {
-            printAttractions(attractionData, nameArray, filter);
+            printAttractions(attractionData);
             configureSearch();
         })
         .catch(function (error) {
@@ -124,38 +128,41 @@ function getAttractions(cityInput, nameArray, filter) {
         });
 }
 
-function clearAttractions() {
-    for (let i = 0; i < 10; i++) {
-        document.getElementById('attbox' + i + '-title').innerHTML = "";
-        document.getElementById('attbox' + i + '-adress').innerHTML = "";
-        document.getElementById('attbox' + i + '-icon').src = "";
-    }
-}
+function printAttractions(attractionData) {
+    const filter = document.getElementById('filter');
 
-function printAttractions(attractionData, nameArray, filter) {
-    // empty nameArray
-    nameArray = [];
-    let venuesLength = attractionData.response.groups[0].items.length;
-    let itemsArray = attractionData.response.groups[0].items;
+    // get items array and the length of it
+    const items = attractionData.response.groups[0].items;
+    const venues = [];
+    let min = 0;
 
-    // fill nameArray with names of the venues to be printed
-    itemsArray.forEach(getNames);
-    function getNames(item) {
-        let attName = item.venue.name;
-        nameArray.push(attName);
+    items.forEach(createVenueArray);
+    function createVenueArray(item) {
+        let venue = item.venue;
+        venues.push(venue);
     }
 
-    // sort in alphabetic order if chosen
-    if (filter.checked == true) {
-        nameArray.sort();
+    const length = venues.length;
+
+    console.log(venues);
+
+    if (filter.checked) {
+        venues.sort((a, b) => {
+            if (a.name > b.name) {
+                return 1;
+            }
+            if (a.name < b.name) {
+                return -1;
+            }
+            return 0;
+        })
     }
 
-    // hide all attraction boxes
-    for (let i = 0; i < 10; i++) {
-        document.getElementById('attbox' + i).style.display = 'none';
-    }
+    //itemsCopy.sort(sortOn(this.venue.name));
+    //console.log(itemsCopy.venue.name);
 
-    for (let i = 0; i < venuesLength; i++) {
+    // printing the venues info to boxes and placing them in the grid
+    for (let i = 0; i < length; i++) {
         let box = document.getElementById('attbox' + i);
         box.style.display = 'grid';
         if (i < 1) {
@@ -184,16 +191,16 @@ function printAttractions(attractionData, nameArray, filter) {
         }
 
         let h3 = document.getElementById('attbox' + i + '-title');
-        h3.innerHTML = nameArray[i];
+        h3.innerHTML = venues[i].name;
 
         let p = document.getElementById('attbox' + i + '-adress');
-        p.innerHTML = attractionData.response.groups[0].items[i].venue.location.address;
+        p.innerHTML = venues[i].location.address;
         if (p.innerHTML == 'undefined') {
-            p.innerHTML = 'Okänd adress';
+            p.innerHTML = 'Unknown address';
         }
 
         let img = document.getElementById('attbox' + i + '-icon');
-        img.src = attractionData.response.groups[0].items[i].venue.categories[0].icon.prefix + "88.png";
+        img.src = venues[i].categories[0].icon.prefix + "88.png";
     }
 }
 
@@ -206,20 +213,29 @@ function attractionsVisible() {
 }
 
 function attractionsHidden() {
-    const attractionsTitle = document.getElementById('attractions-title');
-    const attractions = document.getElementById('attractions');
+    document.getElementById('attractions-title').style.display = 'none';
+    document.getElementById('attractions').style.display = 'none';
 
-    attractionsTitle.style.display = 'none';
-    attractions.style.display = 'none';
+    // hide all attraction boxes
+    for (let i = 0; i < 10; i++) {
+        document.getElementById('attbox' + i).style.display = 'none';
+    }
 }
 
 function configureSearch() {
     const weatherCheckbox = document.getElementById('checkbox-weather');
     const attractionsCheckbox = document.getElementById('checkbox-attractions');
+    const filter = document.getElementById('filter');
     const input = document.getElementById('city-search').value;
+    const errorMsg = document.getElementById('error-msg');
     if (weatherCheckbox.checked == true) {
         if (attractionsCheckbox.checked == true) {
-            document.getElementById('error-msg').innerText = 'Cannot show "Only weather" and "Only Attractions" at the same time. Please choose one!';
+            errorMsg.innerText = 'Please choose "Only Weather" or "Only Attractions" to show only one!';
+            weatherHidden();
+            attractionsHidden();
+        }
+        else if (filter.checked == true) {
+            errorMsg.innerText = 'Weather is not sortable, please choose attractions or both!';
         }
         else {
             document.getElementById('city-name').style.display = 'block';
